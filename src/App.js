@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import './App.css';
+import About from './components/About';
+import Fentities from './components/Fentities';
+import Fentity from './components/Fentity';
+import Home from './components/Home';
+
 
 class App extends Component {
   constructor() {
@@ -14,6 +20,10 @@ class App extends Component {
         { name: "Smaug", power: "Fire and Flying", other: "Burned a city to with his mouth", imgUrl: "https://tinyurl.com/smaug-image" },
         { name: "Buckbeak", power: "Flying", other: "Knocked over Malfoy like a boss", imgUrl: "https://tinyurl.com/buckbeak-image" },
         { name: "Cerebrus", power: "Having three heads", other: "Holding back the dead since 100 BCE", imgUrl: "https://tinyurl.com/cerebrus-image" }
+      ],
+      world: [
+        { name: "Middle Earth", imgUrl: "https://www-images.christianitytoday.com/images/75000.jpg?w=600" },
+        { name: "Atlantis", imgUrl: "https://i.pinimg.com/originals/d9/e3/b2/d9e3b286186f5331dc681e03d82e1b0d.jpg" }
       ]
     }
   }
@@ -21,17 +31,22 @@ class App extends Component {
   render() {
     const state = this.state
     return (
+      <Router>
       <div className="App">
         <div id="home-background"></div>
-        <div id="main-links">
-          {/* Main Links */}
+          <div id="main-links">
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
         </div>
-        {/* Routes go here v */}
-
-        {/* Routes go here ^ */}
+          <Route exact path="/" component={Home}/>
+          <Route path="/about" render={() => <About items={Object.keys(state)} />} />
+          <Route path="/directory/:fentities" exact render={({match}) => <Fentities match={match} state={state} />}/>
+          <Route path='/directory/:fentities/:name' exact render={({match}) => <Fentity match={match} state={state} />}/>
       </div>
+      </Router>
     );
   }
 }
 
 export default App;
+
